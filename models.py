@@ -14,8 +14,25 @@ class User(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'username': self.username,
-            'password': self.password
+            'username': self.username
+        }
+
+class Nota(db.Model):
+    __tablename__='nota'
+    id=db.Column(db.Integer, primary_key=True)
+    value=db.Column(db.Float, nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship(User)
+
+    def __repr__(self):
+        return 'Nota %r' %  self.value
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'value': self.value,
+            'user': self.user.serialize()
         }
 
     
